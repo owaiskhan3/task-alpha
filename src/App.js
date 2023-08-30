@@ -1,23 +1,37 @@
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import Token from './components/Token';
+import { useState } from 'react';
+import AddToken from './components/AddToken';
+import generateRandomNumber from './utils';
 
 function App() {
+  const [isAdd,setIsAdd] = useState(false);
+  const [allTokens,setAllTokens] = useState([]);
+
+
+  const addToken = (token) =>{
+    const num = generateRandomNumber();
+    setAllTokens([...allTokens,{...token,num}]);
+    setIsAdd(false);
+  }
+  
+  console.log({allTokens});
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header setIsBack={setIsAdd} isAdd={isAdd} />
+
+      {
+        isAdd ?
+        <AddToken addToken={addToken}  />
+     : <div>
+      {allTokens.map(token=>
+        
+        <Token data={token} />
+        )}
+      </div>
+      }
     </div>
   );
 }
