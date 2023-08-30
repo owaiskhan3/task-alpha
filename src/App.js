@@ -27,7 +27,7 @@ function App() {
      setAllTokens([...array])
     }
     setIntervalId(iId);
-    }, 3000); // 30000 milliseconds = 30 seconds
+    }, 60000); // 600000 milliseconds = 60 seconds
   }
 
   useEffect(()=>{
