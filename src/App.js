@@ -2,13 +2,14 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header';
 import Token from './components/Token';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddToken from './components/AddToken';
 import generateRandomNumber from './utils';
 
 function App() {
   const [isAdd,setIsAdd] = useState(false);
   const [allTokens,setAllTokens] = useState([]);
+  const [intervalId, setIntervalId] = useState(null);
 
 
   const addToken = (token) =>{
@@ -17,7 +18,27 @@ function App() {
     setIsAdd(false);
   }
   
-  console.log({allTokens});
+  function updateTokens(array) {
+   const iId = setInterval(() => {
+     if(allTokens.length){ 
+      allTokens.forEach(obj => {
+        obj.num = generateRandomNumber(); // Replace this with your token generation logic
+      });
+     setAllTokens([...array])
+    }
+    setIntervalId(iId);
+    }, 3000); // 30000 milliseconds = 30 seconds
+  }
+
+  useEffect(()=>{
+    if(allTokens.length){
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+     updateTokens(allTokens);
+    }
+  },[allTokens.length])
+
   return (
     <div className="App">
       <Header setIsBack={setIsAdd} isAdd={isAdd} />
